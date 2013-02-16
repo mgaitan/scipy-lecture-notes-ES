@@ -4,7 +4,7 @@ Traits
 
 :author: Didrik Pinte
 
-The Traits project allows you to simply add validation, initialization, delegation, notification and a graphical user interface to Python object attributes. In this tutorial we will explore the Traits toolset and learn how to dramatically reduce the amount of boilerplate code you write, do rapid GUI application development, and understand the ideas which underly other parts of the Enthought Tool Suite.
+El proyecto Traits le permite añadir de manera simple validación, inicialización, delegación, notificación y una interfaz gráfica de usuario a atributos de objetos Python. En este tutorial exploraremos el conjunto de herramientas de Traits y aprenderemos como reducir dramáticamente la cantidad de código *boilerplate*, para un desarrollo rápido de aplicaciones GUI, comprendiendo las ideas que subyacen en otras partes del Enthought Tool Suite.
 
 Traits and the Enthought Tool Suite are open source projects licensed under a BSD-style license.
 
@@ -26,7 +26,7 @@ Traits and the Enthought Tool Suite are open source projects licensed under a BS
    :depth: 2
 
 
-Introduction 
+Introduction
 ============
 
 The Enthought Tool Suite enable the construction of sophisticated application frameworks for data analysis, 2D plotting and 3D visualization. These powerful, reusable components are released under liberal BSD-style licenses.
@@ -47,7 +47,7 @@ The main packages are:
 
 In this tutorial, we will focus on Traits.
 
-Example 
+Example
 =======
 
 Throughout this tutorial, we will use an example based on a water resource
@@ -71,8 +71,8 @@ production based on the water released. A simple formula for approximating elect
     * :math:`h` is height in meters,
     * :math:`r` is flow rate in cubic meters per second,
     * :math:`g` is acceleration due to gravity of 9.8 m/s2,
-    * :math:`k` is a coefficient of efficiency ranging from 0 to 1. 
-      
+    * :math:`k` is a coefficient of efficiency ranging from 0 to 1.
+
 Annual electric energy production depends on the available water supply. In some installations the water flow rate can vary by a factor of 10:1 over the course of a year.
 
 
@@ -81,7 +81,7 @@ controlled and uncontrolled parameters :
 
     :math:`storage_{t+1} = storage_t + inflows - release - spillage - irrigation`
 
-.. warning:: 
+.. warning::
 
     The data used in this tutorial are not real and might even not have sense
     in the reality.
@@ -109,7 +109,7 @@ The common way of creating a traits class is by extending from the
     from traits.api import HasTraits, Str, Float
 
     class Reservoir(HasTraits):
-        
+
         name = Str
         max_storage = Float
 
@@ -119,8 +119,8 @@ The common way of creating a traits class is by extending from the
     If using Traits 3.x, you need to adapt the namespace of the traits
     packages:
 
-        * traits.api should be enthought.traits.api 
-        * traitsui.api should be enthought.traits.ui.api 
+        * traits.api should be enthought.traits.api
+        * traitsui.api should be enthought.traits.ui.api
 
 Using a traits class like that is as simple as any other Python class. Note
 that the trait value are passed using keyword arguments:
@@ -159,7 +159,7 @@ Custom default values can be defined in the code:
     from traits.api import HasTraits, Str, Float
 
     class Reservoir(HasTraits):
-        
+
         name = Str
         max_storage = Float(100)
 
@@ -180,7 +180,7 @@ Custom default values can be defined in the code:
 Validation
 ----------
 
-Every trait does validation when the user tries to set its content: 
+Every trait does validation when the user tries to set its content:
 
 ::
 
@@ -196,7 +196,7 @@ Every trait does validation when the user tries to set its content:
         166         """
         167         raise TraitError( object, name, self.full_info( object, name, value ),
     --> 168                           value )
-        169 
+        169
         170     def arg_error ( self, method, arg_num, object, name, value ):
 
     TraitError: The 'max_storage' trait of a Reservoir instance must be a float, but a value of '23' <type 'str'> was specified.
@@ -212,7 +212,7 @@ declarative approach to the creation of classes makes it self-descriptive:
     from traits.api import HasTraits, Str, Float
 
     class Reservoir(HasTraits):
-        
+
         name = Str
         max_storage = Float(100)
 
@@ -225,7 +225,7 @@ information about the trait :
     from traits.api import HasTraits, Str, Float
 
     class Reservoir(HasTraits):
-        
+
         name = Str
         max_storage = Float(100, desc='Maximal storage [hm3]')
 
@@ -279,8 +279,8 @@ magic **_xxxx_fired** method:
 Dependency between objects can be made automatic using the trait **Property**.
 The **depends_on** attribute expresses the dependency between the property and
 other traits. When the other traits gets changed, the property is invalidated.
-Again, Traits uses magic method names for the property : 
-    
+Again, Traits uses magic method names for the property :
+
     * _get_XXX for the getter of the XXX Property trait
     * _set_XXX for the setter of the XXX Property trait
 
@@ -305,7 +305,7 @@ Let's extend the TraitsUI introduction with the ReservoirState example:
 
 Some use cases need the delegation mechanism to be broken by the user when
 setting the value of the trait. The **PrototypeFrom** trait implements this
-behaviour. 
+behaviour.
 
 .. include:: reservoir_turbine_prototype_from.py
     :literal:
@@ -345,8 +345,8 @@ the dynamic listeners
 .. include:: reservoir_state_dynamic_listener.py
     :literal:
 
-The dynamic trait notification signatures are not the same as the static ones : 
-    
+The dynamic trait notification signatures are not the same as the static ones :
+
     * def wake_up_watchman():
         pass
     * def wake_up_watchman(new):
@@ -403,6 +403,6 @@ References
 
     * ETS repositories: http://github.com/enthought
     * Traits manual: http://github.enthought.com/traits/traits_user_manual/index.html
-    * Traits UI manual: http://github.enthought.com/traitsui/traitsui_user_manual/index.html 
+    * Traits UI manual: http://github.enthought.com/traitsui/traitsui_user_manual/index.html
 
     * Mailing list : enthought-dev@enthought.com
