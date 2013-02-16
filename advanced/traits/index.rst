@@ -6,75 +6,81 @@ Traits
 
 El proyecto Traits le permite añadir de manera simple validación, inicialización, delegación, notificación y una interfaz gráfica de usuario a atributos de objetos Python. En este tutorial exploraremos el conjunto de herramientas de Traits y aprenderemos como reducir dramáticamente la cantidad de código *boilerplate*, para un desarrollo rápido de aplicaciones GUI, comprendiendo las ideas que subyacen en otras partes del Enthought Tool Suite.
 
-Traits and the Enthought Tool Suite are open source projects licensed under a BSD-style license.
+Traits y el Enthought Tool Suite son proyectos de código abierto bajo una licencia estilo BSD.
 
-.. topic:: Intended Audience
+.. topic:: Público destinatario
 
-    Intermediate to advanced Python programmers
+    Programadores Python de nivel intermedio o avanzado
 
-.. topic:: Requirements
+.. topic:: Requirimientos
 
     * Python 2.6 or 2.7 (www.python.org)
-    * Either wxPython (http://www.wxpython.org/) or PyQt (http://www.riverbankcomputing.co.uk/software/pyqt/intro)
-    * Numpy and Scipy (http://www.scipy.org)
-    * Enthought Tool Suite 3.x or higher (http://code.enthought.com/projects)
-    * All required software can be obtained by installing the EPD Free (http://www.enthought.com/products/epd.php)
+    * wxPython (http://www.wxpython.org/) o PyQt (http://www.riverbankcomputing.co.uk/software/pyqt/intro)
+    * Numpy y Scipy (http://www.scipy.org)
+    * Enthought Tool Suite 3.x o superior (http://code.enthought.com/projects)
+    * Todo el software requerido es provisto con la instalación de EPD Free (http://www.enthought.com/products/epd.php)
 
 
-.. contents:: Tutorial content
+.. contents:: Contenido del tutorial
    :local:
    :depth: 2
 
 
-Introduction
+Introducción
 ============
 
-The Enthought Tool Suite enable the construction of sophisticated application frameworks for data analysis, 2D plotting and 3D visualization. These powerful, reusable components are released under liberal BSD-style licenses.
+El Enthought Tool Suite posibilita la construcción de sofisticadas *frameworks* de aplicaciones para análisis de datos, graficación 2D y visualización 3D. Estos potentes y reusables componentes están liberados bajo una permisiva licencia estilo BSD.
 
-The main packages are:
+Los principales paquetes son:
 
-    * Traits - component based approach to build our applications.
-    * Kiva - 2D primitives supporting path based rendering, affine transforms,
-      alpha blending and more.
-    * Enable - object based 2D drawing canvas.
-    * Chaco - plotting toolkit for building complex interactive 2D plots.
-    * Mayavi - 3D visualization of scientific data based on VTK.
-    * Envisage - application plugin framework for building scriptable and
-      extensible applications
+    * Traits - aproximación basada en componentes para la construcción de aplicaciones.
+    * Kiva - primitivas 2D incluyendo render basado en ramas,
+      transformación afín, fundido de canal alfa, y más
+    * Enable - Canvas de dibujado 2D basado en objetos.
+    * Chaco - Toolkit de graficación para la construcción de complejos gráficos 2D interactivos.
+    * Mayavi - Visualización 3D de datos científicos basado en VTK.
+    * Envisage - Framework de plugins de aplicaciones para construir software automatizable y extensible
 
 .. image:: ETS.jpg
     :align: center
 
-In this tutorial, we will focus on Traits.
+En este tutorial nos enfocaremos en Traits.
 
-Example
+Ejemplo
 =======
 
-Throughout this tutorial, we will use an example based on a water resource
-management simple case. We will try to model a dam and reservoir system. The
-reservoir and the dams do have a set of parameters :
+A lo largo de este tutorial, usaremos un ejemplo basado en un simple caso
+de administración de recursos hídricos. Intentaremos modelar una represa
+y un sistema de reservorio. El reservorio y las represas tienen un conjunto
+de parámetros:
 
-    * Name
-    * Minimal and maximal capacity of the reservoir [hm3]
-    * Height and length of the dam [m]
-    * Catchment area [km2]
-    * Hydraulic head [m]
-    * Power of the turbines [MW]
-    * Minimal and maximal release [m3/s]
-    * Efficiency of the turbines
+    * Nombre
+    * Capacidad mínima y máxima del reservorio [hm3]
+    * Altura y largo de la represa [m]
+    * Superficie de la cuenca [km2]
+    * Cabezal hidráulico [m]
+    * Potencia de turbinas [MW]
+    * Caudal mínimo y máximo [m3/s]
+    * Eficiencia de las turbinas
 
-The reservoir has a known behaviour. One part is related to the energy
-production based on the water released. A simple formula for approximating electric power production at a hydroelectric plant is :math:`P = \rho hrgk`, where:
+El reservorio tiene un comportamiento conocido. Una parte está relacionada
+a la energía de producción basada en el caudal de agua. Una simple formula
+para obtener una aproximación de la energía eléctrica producida en una
+planta hidroeléctrica es :math:`P = \rho hrgk`, donde:
 
-    * :math:`P` is Power in watts,
-    * :math:`\rho` is the density of water (~1000 kg/m3),
-    * :math:`h` is height in meters,
-    * :math:`r` is flow rate in cubic meters per second,
-    * :math:`g` is acceleration due to gravity of 9.8 m/s2,
-    * :math:`k` is a coefficient of efficiency ranging from 0 to 1.
+    * :math:`P` es la potencia en watts,
+    * :math:`\rho` es la densidad del agua (~1000 kg/m3),
+    * :math:`h` es la altura en metros,
+    * :math:`r` es el caudal medio en metros cúbicos por segundo,
+    * :math:`g` es la aceleración de la gravedad: 9.8 m/s2,
+    * :math:`k` es el coeficiente de eficiencia, entre 0 y 1.
 
-Annual electric energy production depends on the available water supply. In some installations the water flow rate can vary by a factor of 10:1 over the course of a year.
+La producción de energía anual depende de la provisión agua disponible.
+En algunas instalaciones el flujo de agua puede variar en un factor 10:1
+a lo largo del año.
 
+La segunda parte del comportamiento es el estado de la cuenca, que depende
+de parámetros controlados y no controlados:
 
 The second part of the behaviour is the state of the storage that depends on
 controlled and uncontrolled parameters :
